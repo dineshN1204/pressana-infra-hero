@@ -77,7 +77,7 @@ export default function Gallery() {
         </div>
         <div
           ref={ref}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]"
         >
           {images.map((img, i) => (
             <button
@@ -87,20 +87,22 @@ export default function Gallery() {
                 opacity: inView ? 1 : 0,
                 transform: inView ? "scale(1)" : "scale(0.95)",
                 transition: `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`,
-                gridColumn: img.large ? "span 2 / span 2" : undefined,
-                gridRow: img.large ? "span 2 / span 2" : undefined,
                 padding: 0,
                 border: "none",
                 background: "none",
               }}
-              className="relative overflow-hidden rounded-2xl cursor-pointer group text-left"
+              className={[
+                "relative overflow-hidden rounded-2xl cursor-pointer group text-left",
+                img.large
+                  ? "aspect-[4/3] sm:col-span-2 sm:row-span-2 sm:aspect-auto"
+                  : "aspect-[4/3]",
+              ].join(" ")}
               onClick={() => setLightbox(img.src)}
             >
               <img
                 src={img.src}
                 alt={img.alt}
-                className="w-full object-cover group-hover:scale-110 transition-transform duration-700"
-                style={{ height: img.large ? "450px" : "210px" }}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-stone-900/40 dark:bg-[#0a0f1e]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <ZoomIn className="text-gold" size={32} />
